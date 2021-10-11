@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.remove_item:
                 Toast.makeText(this,"Remove!",Toast.LENGTH_LONG).show();
                 break;
-            case R.id.ChosePhoto_item:
+            case R.id.ChoosePhoto_item:
                 Intent intent2 = new Intent(MainActivity.this,useCamera.class);
                 startActivity(intent2);
                 break;

@@ -7,6 +7,6 @@
         android:id="@+id/remove_item"
         android:title="Remove"/>
     <item
-        android:id="@+id/ChosePhoto_item"
-        android:title="ChosePhoto"/>
+        android:id="@+id/ChoosePhoto_item"
+        android:title="ChoosePhoto"/>
 </menu>
