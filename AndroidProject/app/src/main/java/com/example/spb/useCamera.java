@@ -1,22 +1,21 @@
 package com.example.spb;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.DocumentsContract;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -24,7 +23,13 @@ import androidx.core.content.FileProvider;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+
+import java.util.List;
 
 public class useCamera extends AppCompatActivity {
 
@@ -33,11 +38,27 @@ public class useCamera extends AppCompatActivity {
 
     private ImageView photo;
     private Uri imageUri;
+    private Button goNext;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_use_camera);
         photo = (ImageView) findViewById(R.id.photo);
+
+        goNext = (Button) findViewById(R.id.go_next);
+        goNext.setVisibility(View.GONE);
+        goNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bitmap bitmap = setimage(photo);
+                String path = saveImageToGallery(bitmap);
+                Log.wtf("tts",path);
+                Intent intent = new Intent(useCamera.this,PhotoDisplay.class);
+                intent.putExtra("image",path);
+                startActivity(intent);
+            }
+        });
 
         Button takePhoto = (Button) findViewById(R.id.take_photo);
         takePhoto.setOnClickListener(new View.OnClickListener() {
@@ -80,16 +101,17 @@ public class useCamera extends AppCompatActivity {
             }
         });
     }
+
     @Override
     protected void onActivityResult(int requestCode,int resultCode,Intent data){
         switch(requestCode){
             case TAKE_PHOTO:
                 if(resultCode == RESULT_OK){
                     try {
-                        Log.wtf("tts",imageUri.getPath());
                         Bitmap bitmap = BitmapFactory.decodeStream(
                                 getContentResolver().openInputStream(imageUri));
                         photo.setImageBitmap(bitmap);
+                        goNext.setVisibility(View.VISIBLE);
                     }
                     catch(FileNotFoundException e){
                         e.printStackTrace();
@@ -100,6 +122,7 @@ public class useCamera extends AppCompatActivity {
                 if(resultCode == RESULT_OK){
                     Uri uri = data.getData();
                     photo.setImageURI(uri);
+                    goNext.setVisibility(View.VISIBLE);
 //                  String uriAuthority = uri.getAuthority();
 //                  Log.wtf("tts",uri.getScheme());
 //                  Log.wtf("tts",uri.getPath());
@@ -108,5 +131,34 @@ public class useCamera extends AppCompatActivity {
             default:
                 break;
         }
+    }
+
+    private Bitmap setimage(ImageView view1){
+        Bitmap image = ((BitmapDrawable)view1.getDrawable()).getBitmap();
+        Bitmap bitmap1 = Bitmap.createBitmap(image);
+        return bitmap1;
+    }
+
+    public String saveImageToGallery(Bitmap bmp) {
+        long timeStamp = System.currentTimeMillis();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+        String sd = sdf.format(new Date(timeStamp));
+
+        File file = new File(getExternalFilesDir(null).getPath() + "/" + sd + ".jpg");
+        Log.wtf("tts",file.getPath());
+        try {
+            if(file.exists())
+                file.delete();
+            if(!file.exists())
+                file.createNewFile();
+            FileOutputStream out = new FileOutputStream(file);
+            bmp.compress(Bitmap.CompressFormat.JPEG, 100, out);
+            out.flush();
+            out.close();
+            return file.getPath();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
