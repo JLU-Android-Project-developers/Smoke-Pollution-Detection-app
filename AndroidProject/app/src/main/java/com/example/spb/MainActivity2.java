@@ -23,6 +23,7 @@ public class MainActivity2 extends AppCompatActivity {
                 finish();
             }
         });
+
         Button button2 = (Button) findViewById(R.id.openWebButton);
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
