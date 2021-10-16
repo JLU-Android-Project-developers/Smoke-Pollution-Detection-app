@@ -16,7 +16,7 @@
             android:name=".PhotoDisplay"
             android:exported="true" />
         <activity
-            android:name=".useCamera"
+            android:name=".ChoosePhoto"
             android:exported="true" />
         <activity
             android:name=".MainActivity2"
@@ -28,10 +28,14 @@
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
 
         <provider
             android:name="androidx.core.content.FileProvider"

@@ -2,7 +2,9 @@
 <project version="4">
   <component name="AndroidLayouts">
     <shared>
-      <config />
+      <config>
+        <device id="pixel_5" />
+      </config>
     </shared>
   </component>
   <component name="AndroidLogFilters">
@@ -13,19 +15,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1949e51f-7200-4193-b519-a59124995a89" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/AndroidProject/app/src/main/res/drawable/a.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/render.experimental.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/deploymentTargetDropDown.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AndroidProject/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidProject/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AndroidProject/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidProject/app/src/main/AndroidManifest.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AndroidProject/app/src/main/java/com/example/spb/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidProject/app/src/main/java/com/example/spb/MainActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AndroidProject/app/src/main/java/com/example/spb/MainActivity2.java" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidProject/app/src/main/java/com/example/spb/MainActivity2.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AndroidProject/app/src/main/java/com/example/spb/PhotoDisplay.java" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidProject/app/src/main/java/com/example/spb/PhotoDisplay.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AndroidProject/app/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidProject/app/src/main/res/layout/activity_main.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AndroidProject/app/src/main/java/com/example/spb/useCamera.java" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidProject/app/src/main/java/com/example/spb/ChoosePhoto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AndroidProject/app/src/main/res/layout/activity_photo_display.xml" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidProject/app/src/main/res/layout/activity_photo_display.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AndroidProject/app/src/main/res/layout/activity_use_camera.xml" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidProject/app/src/main/res/layout/activity_use_camera.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AndroidProject/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidProject/build.gradle" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[C:\Users\11390\.android\avd\Pixel_5_API_30.avd]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[C:\Users\11390\.android\avd\Pixel_4_API_30.avd]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$/AndroidProject">
       <ProjectState />
@@ -42,6 +50,13 @@
         </projects_view>
       </state>
     </system>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="layoutResourceFile" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -62,8 +77,9 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="com.intellij.openapi.externalSystem.service.settings.ExternalSystemGroupConfigurable" value="ALL" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/AndroidProject" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../FileRecv/Activity_name" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
@@ -71,6 +87,7 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\Smoke-Pollution-Detection-app\AndroidProject\app\src\main\res\mipmap-mdpi" />
       <recent name="E:\Smoke-Pollution-Detection-app\AndroidProject\app\src\main\res\drawable" />
     </key>
   </component>

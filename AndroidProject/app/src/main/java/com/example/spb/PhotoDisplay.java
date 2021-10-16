@@ -31,13 +31,6 @@ public class PhotoDisplay extends AppCompatActivity {
         setContentView(R.layout.activity_photo_display);
         photo = (ImageView) findViewById(R.id.photo);
 
-        Button button = (Button) findViewById(R.id.go_back);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
 
         Bitmap bitmap = null;
         Intent intent = getIntent();
@@ -59,5 +52,29 @@ public class PhotoDisplay extends AppCompatActivity {
             }
         } catch (Exception e)
         { }
+
+        Button button = (Button) findViewById(R.id.go_back);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
+        Button button2 = (Button) findViewById(R.id.go_next);
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // UCrop.of(path, "1.jpg").start(this);
+            }
+        });
     }
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
+//            final Uri resultUri = UCrop.getOutput(data);
+//        } else if (resultCode == UCrop.RESULT_ERROR) {
+//            final Throwable cropError = UCrop.getError(data);
+//        }
+//    }
 }

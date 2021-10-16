@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "E:\\Smoke-Pollution-Detection-app\\AndroidProject\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\activity_main.xml",
+        "source": "E:\\Smoke-Pollution-Detection-app\\AndroidProject\\app\\src\\main\\res\\layout\\activity_main.xml"
+    },
+    {
+        "merged": "E:\\Smoke-Pollution-Detection-app\\AndroidProject\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\activity_use_camera.xml",
+        "source": "E:\\Smoke-Pollution-Detection-app\\AndroidProject\\app\\src\\main\\res\\layout\\activity_use_camera.xml"
+    },
+    {
+        "merged": "E:\\Smoke-Pollution-Detection-app\\AndroidProject\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\activity_photo_display.xml",
+        "source": "E:\\Smoke-Pollution-Detection-app\\AndroidProject\\app\\src\\main\\res\\layout\\activity_photo_display.xml"
+    },
+    {
+        "merged": "E:\\Smoke-Pollution-Detection-app\\AndroidProject\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\activity_main2.xml",
+        "source": "E:\\Smoke-Pollution-Detection-app\\AndroidProject\\app\\src\\main\\res\\layout\\activity_main2.xml"
+    }
+]

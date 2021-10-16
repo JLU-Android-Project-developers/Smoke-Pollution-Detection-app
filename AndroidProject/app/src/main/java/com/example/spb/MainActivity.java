@@ -5,7 +5,6 @@ import android.util.Log;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -55,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this,"Remove!",Toast.LENGTH_LONG).show();
                 break;
             case R.id.ChoosePhoto_item:
-                Intent intent2 = new Intent(MainActivity.this,useCamera.class);
+                Intent intent2 = new Intent(MainActivity.this, ChoosePhoto.class);
                 startActivity(intent2);
                 break;
             default:
