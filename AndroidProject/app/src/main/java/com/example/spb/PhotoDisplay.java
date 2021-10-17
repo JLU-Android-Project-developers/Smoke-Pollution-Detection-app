@@ -38,20 +38,21 @@ public class PhotoDisplay extends AppCompatActivity {
 
         Log.wtf("tts",path);
         if(path.equals("null"))
-        {
             photo.setImageResource(R.drawable.a);
-            return ;
-        }
-        try
-        {
-            File file = new File(path);
-            if(file.exists())
+        else {
+            try
             {
-                bitmap = BitmapFactory.decodeFile(path);
-                photo.setImageBitmap(bitmap);
+                File file = new File(path);
+                if(file.exists())
+                {
+                    bitmap = BitmapFactory.decodeFile(path);
+                    photo.setImageBitmap(bitmap);
+                }
+            } catch (Exception e)
+            {
+
             }
-        } catch (Exception e)
-        { }
+        }
 
         Button button = (Button) findViewById(R.id.go_back);
         button.setOnClickListener(new View.OnClickListener() {
