@@ -17,9 +17,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1949e51f-7200-4193-b519-a59124995a89" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/deploymentTargetDropDown.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deploymentTargetDropDown.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AndroidProject/app/src/main/java/com/example/spb/PhotoDisplay.java" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidProject/app/src/main/java/com/example/spb/PhotoDisplay.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AndroidProject/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidProject/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AndroidProject/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidProject/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AndroidProject/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidProject/build.gradle" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,7 +73,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="com.intellij.openapi.externalSystem.service.settings.ExternalSystemGroupConfigurable" value="ALL" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../FileRecv/Activity_name" />
+    <property name="last_opened_file_path" value="$USER_HOME$/Desktop/uCrop-develop/uCrop-develop" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
@@ -188,7 +189,19 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="HEAD" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
