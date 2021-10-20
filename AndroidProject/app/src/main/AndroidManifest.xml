@@ -11,12 +11,14 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:label="@string/app_name"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity
+            android:label="Welcome!"
+            android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,10 +28,15 @@
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
+            android:label=""
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".MainActivity2" />
-        <activity android:name=".ChoosePhoto" />
-        <activity android:name=".PhotoDisplay" />
+        <activity
+            android:label="Choose Photo"
+            android:name=".ChoosePhoto" />
+        <activity
+            android:label=""
+            android:name=".PhotoDisplay" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

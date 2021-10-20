@@ -10,13 +10,16 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
 import com.yalantis.ucrop.UCrop;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import java.io.File;
 import java.io.File;
@@ -35,6 +38,12 @@ public class PhotoDisplay extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ActionBar actionBar = getSupportActionBar();
+        if(actionBar != null){
+            actionBar.setHomeButtonEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
         setContentView(R.layout.activity_photo_display);
         photo = (ImageView) findViewById(R.id.photo);
 
@@ -58,15 +67,9 @@ public class PhotoDisplay extends AppCompatActivity {
             }
         }
 
-        Button button = (Button) findViewById(R.id.go_back);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+        Button button = (Button) findViewById(R.id.go_next);
 
-        Button button2 = (Button) findViewById(R.id.go_next);
+        Button button2 = (Button) findViewById(R.id.go_edit);
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -75,8 +78,17 @@ public class PhotoDisplay extends AppCompatActivity {
                 String sd = sdf.format(new Date(timeStamp));
                 newUri = "file://" + getExternalFilesDir(null).getPath() + "/" + sd + ".jpg";
 
-                UCrop.of( photoUri,  Uri.parse(newUri))
-                        .start(PhotoDisplay.this);
+                UCrop uCrop = UCrop.of( photoUri,  Uri.parse(newUri));
+                UCrop.Options options = new UCrop.Options();
+
+                //设置toolbar颜色
+                options.setToolbarColor(ActivityCompat.getColor(PhotoDisplay.this, R.color.colorPrimary));
+                //设置状态栏颜色
+                options.setStatusBarColor(ActivityCompat.getColor(PhotoDisplay.this, R.color.colorPrimary));
+                options.setFreeStyleCropEnabled(true);
+
+                uCrop.withOptions(options);
+                uCrop.start(PhotoDisplay.this);
             }
         });
     }
@@ -89,5 +101,14 @@ public class PhotoDisplay extends AppCompatActivity {
         } else if (resultCode == UCrop.RESULT_ERROR) {
             final Throwable cropError = UCrop.getError(data);
         }
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        //返回按钮点击事件
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

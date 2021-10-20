@@ -10,10 +10,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -39,6 +41,12 @@ public class ChoosePhoto extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_use_camera);
+        ActionBar actionBar = getSupportActionBar();
+        if(actionBar != null){
+            actionBar.setHomeButtonEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
         photo = (ImageView) findViewById(R.id.photo);
 
         goNext = (Button) findViewById(R.id.go_next);
@@ -120,7 +128,7 @@ public class ChoosePhoto extends AppCompatActivity {
                     goNext.setVisibility(View.VISIBLE);
 //                  String uriAuthority = uri.getAuthority();
 //                  Log.wtf("tts",uri.getScheme());
-                  Log.wtf("tts",uri.getPath());
+                    Log.wtf("tts",uri.getPath());
                 }
                 break;
             default:
@@ -155,5 +163,14 @@ public class ChoosePhoto extends AppCompatActivity {
             e.printStackTrace();
         }
         return null;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        //返回按钮点击事件
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -5,6 +5,8 @@
       <map>
         <entry key="..\:/Smoke-Pollution-Detection-app/AndroidProject/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
         <entry key="..\:/Smoke-Pollution-Detection-app/AndroidProject/app/src/main/res/layout/activity_main.xml" value="0.1296875" />
+        <entry key="..\:/Smoke-Pollution-Detection-appp/AndroidProject/app/src/main/res/layout/activity_photo_display.xml" value="0.10729166666666666" />
+        <entry key="..\:/Smoke-Pollution-Detection-appp/AndroidProject/app/src/main/res/layout/activity_use_camera.xml" value="0.10729166666666666" />
       </map>
     </option>
   </component>
@@ -52,7 +54,7 @@
       </value>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
