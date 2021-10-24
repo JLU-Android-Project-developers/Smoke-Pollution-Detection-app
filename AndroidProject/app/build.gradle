@@ -1,11 +1,57 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.mob.sdk'
 
+MobSDK {
+    appKey "348b4585f64f2"
+    appSecret "9177ba1c485da347771c7304881fba5c"
+    ShareSDK {
+        loopShare true
+        devInfo {
+            Wechat {
+                appId "wx4868b35061f87885"
+                appSecret "64020361b8ec4c99936c0e3999a9f249"
+                userName "gh_afb25ac019c9"
+                path "pages/index/index.html?id=1"
+                withShareTicket true
+                miniprogramType 2
+            }
+            QQ {
+                appId "100371282"
+                appKey "aed9b0303e3ed1e27bae87c33761161d"
+            }
+            ShortMessage {
+                enable true
+            }
+            FacebookMessenger {
+                appId "107704292745179"
+            }
+            WhatsApp {
+                enable true
+            }
+            Email {
+                enable true
+            }
+            WechatMoments {
+                appId "wx4868b35061f87885"
+                appSecret "64020361b8ec4c99936c0e3999a9f249"
+            }
+            WechatFavorite {
+                appId "wx4868b35061f87885"
+                appSecret "64020361b8ec4c99936c0e3999a9f249"
+            }
+            QZone {
+                appId "100371282"
+                appKey "aed9b0303e3ed1e27bae87c33761161d"
+            }
+        }
+    }
+}
 android {
     compileSdkVersion 31
     defaultConfig {
         applicationId "com.example.jlu.myapplication"
         minSdkVersion 28
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -16,12 +62,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    buildToolsVersion '28.0.2'
+    buildToolsVersion '30.0.2'
 }
 
 dependencies {
     implementation 'com.github.yalantis:ucrop:2.2.6-native'
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+    //noinspection GradleCompatible
     implementation 'com.android.support:appcompat-v7:28.0.0-alpha1'
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
     implementation 'androidx.appcompat:appcompat:1.0.0-alpha1'

@@ -41,5 +41,10 @@
       <option name="name" value="C:\Users\11390\AppData\Local\Android\Sdk\extras\android\m2repository" />
       <option name="url" value="file:/$USER_HOME$/AppData/Local/Android/Sdk/extras/android/m2repository" />
     </remote-repository>
+    <remote-repository>
+      <option name="id" value="MobSDK" />
+      <option name="name" value="MobSDK" />
+      <option name="url" value="https://mvn.mob.com/android" />
+    </remote-repository>
   </component>
 </project>
