@@ -47,13 +47,11 @@ public class MainActivity2 extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Log.wtf("tsts", "Starting");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Log.wtf("tsts", "Resumeing");
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

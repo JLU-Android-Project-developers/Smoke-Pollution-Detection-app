@@ -46,7 +46,6 @@ public class ChoosePhoto extends AppCompatActivity {
             actionBar.setHomeButtonEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-
         photo = (ImageView) findViewById(R.id.photo);
 
         goNext = (Button) findViewById(R.id.go_next);
@@ -143,9 +142,7 @@ public class ChoosePhoto extends AppCompatActivity {
     }
 
     public String saveImageToGallery(Bitmap bmp) {
-        long timeStamp = System.currentTimeMillis();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-        String sd = sdf.format(new Date(timeStamp));
+        String sd = Method.getTimeStr();
         String newPath = getExternalFilesDir(null).getPath() + "/" + sd + ".jpg";
         File file = new File(newPath);
         Log.wtf("tts",file.getPath());

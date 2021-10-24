@@ -15,6 +15,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.dtflys.forest.config.ForestConfiguration;
+import com.google.gson.Gson;
 import com.yalantis.ucrop.UCrop;
 
 import androidx.appcompat.app.ActionBar;
@@ -27,14 +29,17 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
+import java.util.Map;
+import android.graphics.Rect;
 public class PhotoDisplay extends AppCompatActivity {
 
     private ImageView photo;
     private Uri photoUri;
-    private String newUri="";
+    private String newUri = "";
+    private String op_sd = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,12 +52,10 @@ public class PhotoDisplay extends AppCompatActivity {
         setContentView(R.layout.activity_photo_display);
         photo = (ImageView) findViewById(R.id.photo);
 
-
         Bitmap bitmap = null;
         Intent intent = getIntent();
         final String path = intent.getStringExtra("image");
 
-        Log.wtf("tts", "create" + path);
         if (path.equals("null"))
             photo.setImageResource(R.drawable.a);
         else {
@@ -68,14 +71,62 @@ public class PhotoDisplay extends AppCompatActivity {
         }
 
         Button button = (Button) findViewById(R.id.go_next);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view){
 
+                ForestConfiguration forest = ForestConfiguration.configuration();
+                MyClient myClient = forest.createInstance(MyClient.class);
+
+                Thread thread = new Thread (
+                    new Runnable()
+                    {
+                        @Override
+                        public void run()
+                        {
+                            String result = myClient.upload(path, progress -> {
+                                System.out.println("total bytes: " + progress.getTotalBytes());   // 文件大小
+                                System.out.println("current bytes: " + progress.getCurrentBytes());   // 已上传字节数
+                                System.out.println("progress: " + Math.round(progress.getRate() * 100) + "%");  // 已上传百分比
+                                if (progress.isDone()) {   // 是否上传完成
+                                    System.out.println("--------   Upload Completed!   --------");
+                                }
+                            });
+
+                            Gson gson = new Gson();
+                            Map map = gson.fromJson(result,Map.class);
+                            String downloadPath = (String) map.get("url");
+
+                            op_sd = Method.getTimeStr();
+                            File file = myClient.downloadFile(
+                                    getExternalFilesDir(null).getPath(),
+                                    op_sd + ".jpg" ,
+                                    progress -> {
+                                        System.out.println("total bytes: " + progress.getTotalBytes());   // 文件大小
+                                        System.out.println("current bytes: " + progress.getCurrentBytes());   // 已下载字节数
+                                        System.out.println("progress: " + Math.round(progress.getRate() * 100) + "%");  // 已下载百分比
+                                        if (progress.isDone()) {   // 是否下载完成
+                                            System.out.println("--------   Download Completed!   --------");
+                                        }
+                                    },
+                                    downloadPath);
+                        }
+                    });
+
+                thread.start();
+                try {
+                    thread.join();
+                } catch (InterruptedException e) {
+                }
+                Uri downloadUri = Uri.parse("file://" + getExternalFilesDir(null).getPath() + "/" + op_sd + ".jpg");
+                photo.setImageURI(downloadUri);
+            }
+        });
         Button button2 = (Button) findViewById(R.id.go_edit);
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                long timeStamp = System.currentTimeMillis();
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-                String sd = sdf.format(new Date(timeStamp));
+                String sd = Method.getTimeStr();
                 newUri = "file://" + getExternalFilesDir(null).getPath() + "/" + sd + ".jpg";
 
                 UCrop uCrop = UCrop.of( photoUri,  Uri.parse(newUri));
@@ -92,6 +143,7 @@ public class PhotoDisplay extends AppCompatActivity {
             }
         });
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
@@ -102,6 +154,7 @@ public class PhotoDisplay extends AppCompatActivity {
             final Throwable cropError = UCrop.getError(data);
         }
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         //返回按钮点击事件
