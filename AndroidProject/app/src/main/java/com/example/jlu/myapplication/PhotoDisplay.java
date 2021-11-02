@@ -96,8 +96,9 @@ public class PhotoDisplay extends AppCompatActivity {
                             Gson gson = new Gson();
                             Map map = gson.fromJson(result,Map.class);
                             String downloadPath = (String) map.get("url");
-
                             op_sd = Method.getTimeStr();
+                            for(int i=1;i<=10000;i++) {}
+
                             File file = myClient.downloadFile(
                                     getExternalFilesDir(null).getPath(),
                                     op_sd + ".jpg" ,

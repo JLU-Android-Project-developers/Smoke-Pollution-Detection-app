@@ -13,15 +13,16 @@ import java.util.Map;
 public interface MyClient {
     @Request(
             //url = "http://192.168.229.162:4000",
-            url = "http://10.151.202.101:4000/hello?", // 校园网
+            //url = "http://10.151.202.101:4000/hello?", // 校园网
+            url = "http://123.56.40.181:8090",
             headers = "Accept: text/plain"
     )
     String sendRequest(@Query("myName") String username);
 
-    @Post(url = "http://10.151.202.101:4000/upload")
+    @Post(url = "http://123.56.40.181:8090/upload")
     String upload(@DataFile("file") String filePath, OnProgress onProgress);
 
-    @Post(url = "http://10.151.202.101:4000/download")
+    @Post(url = "http://123.56.40.181:8090/download")
     @DownloadFile(dir = "${0}", filename = "${1}")
     File downloadFile(String dir, String filename, OnProgress onProgress, @JSONBody("downloadPath") String path);
 }
