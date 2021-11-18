@@ -1,5 +1,50 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'com.mob.sdk'
+MobSDK {
+    appKey "348b4585f64f2"
+    appSecret "9177ba1c485da347771c7304881fba5c"
+    ShareSDK {
+        loopShare true
+        devInfo {
+            Wechat {
+                appId "wx4868b35061f87885"
+                appSecret "64020361b8ec4c99936c0e3999a9f249"
+                userName "gh_afb25ac019c9"
+                path "pages/index/index.html?id=1"
+                withShareTicket true
+                miniprogramType 2
+            }
+            QQ {
+                appId "100371282"
+                appKey "aed9b0303e3ed1e27bae87c33761161d"
+            }
+            ShortMessage {
+                enable true
+            }
+            FacebookMessenger {
+                appId "107704292745179"
+            }
+            WhatsApp {
+                enable true
+            }
+            Email {
+                enable true
+            }
+            WechatMoments {
+                appId "wx4868b35061f87885"
+                appSecret "64020361b8ec4c99936c0e3999a9f249"
+            }
+            WechatFavorite {
+                appId "wx4868b35061f87885"
+                appSecret "64020361b8ec4c99936c0e3999a9f249"
+            }
+            QZone {
+                appId "100371282"
+                appKey "aed9b0303e3ed1e27bae87c33761161d"
+            }
+        }
+    }
+}
 android {
 
     compileSdkVersion 30
@@ -24,7 +69,7 @@ android {
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
     }
-    buildToolsVersion '28.0.2'
+    buildToolsVersion '30.0.2'
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -32,6 +77,9 @@ android {
 }
 
 dependencies {
+    implementation 'com.github.bumptech.glide:glide:4.7.1'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.7.1'
+    implementation 'id.zelory:compressor:2.1.0'
     implementation group: 'com.dtflys.forest', name: 'forest-core', version: '1.5.1'
     implementation 'com.github.yalantis:ucrop:2.2.6-native'
     implementation fileTree(include: ['*.jar'], dir: 'libs')
@@ -43,7 +91,6 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment:2.3.5'
     implementation 'androidx.navigation:navigation-ui:2.3.5'
     implementation 'com.google.code.gson:gson:2.8.4'
-
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'

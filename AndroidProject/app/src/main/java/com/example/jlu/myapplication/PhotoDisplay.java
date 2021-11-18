@@ -23,10 +23,12 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -34,8 +36,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 import android.graphics.Rect;
-public class PhotoDisplay extends AppCompatActivity {
 
+import id.zelory.compressor.Compressor;
+public class PhotoDisplay extends AppCompatActivity {
     private ImageView photo;
     private Uri photoUri;
     private String newUri = "";
@@ -65,6 +68,7 @@ public class PhotoDisplay extends AppCompatActivity {
                     bitmap = BitmapFactory.decodeFile(path);
                     photo.setImageBitmap(bitmap);
                     photoUri = Uri.parse("file://" + path);
+
                 }
             } catch (Exception e) {
             }
@@ -77,7 +81,7 @@ public class PhotoDisplay extends AppCompatActivity {
 
                 ForestConfiguration forest = ForestConfiguration.configuration();
                 MyClient myClient = forest.createInstance(MyClient.class);
-
+                compress(path);
                 Thread thread = new Thread (
                     new Runnable()
                     {
@@ -97,8 +101,6 @@ public class PhotoDisplay extends AppCompatActivity {
                             Map map = gson.fromJson(result,Map.class);
                             String downloadPath = (String) map.get("url");
                             op_sd = Method.getTimeStr();
-                            for(int i=1;i<=10000;i++) {}
-
                             File file = myClient.downloadFile(
                                     getExternalFilesDir(null).getPath(),
                                     op_sd + ".jpg" ,
@@ -143,6 +145,20 @@ public class PhotoDisplay extends AppCompatActivity {
                 uCrop.start(PhotoDisplay.this);
             }
         });
+    }
+
+    protected void compress(String path)
+    {
+        try {
+            File new_file = new Compressor(PhotoDisplay.this).compressToFile(new File(path));
+            FileOutputStream fos = new FileOutputStream(new File(path));
+            Bitmap bitmap = BitmapFactory.decodeFile(new_file.getPath());
+            bitmap.compress(Bitmap.CompressFormat.JPEG,100,fos);
+            fos.flush();
+            fos.close();
+        }
+        catch (Exception e){
+        }
     }
 
     @Override
