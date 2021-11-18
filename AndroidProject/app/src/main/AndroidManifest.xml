@@ -9,10 +9,10 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:networkSecurityConfig="@xml/network_config"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:networkSecurityConfig="@xml/network_config"
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
@@ -26,32 +26,33 @@
             android:name=".MainActivity"
             android:label="Welcome!">
         </activity>
+
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:label=""
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".MainActivity2" />
 
+        <activity android:name=".MainActivity2" />
         <activity
             android:name=".ChoosePhoto"
-            android:label="Choose Photo" >
+            android:label="Choose Photo">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SharePage"
-            android:label="">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
-        </activity>
         <activity
-            android:name=".PhotoDisplay"
-            android:label="" />
+            android:name=".SharePage"
+            android:label="">
+        </activity>
+        <activity android:name=".PhotoDisplay">
+        </activity>
 
+        <activity
+            android:name=".ShowResult"
+            android:label="">
+        </activity>
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.example.cameraalbumtest.fileprovider"
