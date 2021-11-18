@@ -1,7 +1,7 @@
 # Smoke-Pollution-Detection-app
 JLU Android 项目大作业 烟雾污染检测app 
 
-
+app路径：Smoke-Pollution-Detection-app\AndroidProject\app\build\outputs\apk\debug
 
 #### 项目说明
 
