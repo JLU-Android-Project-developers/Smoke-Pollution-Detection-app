@@ -1,8 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ShowResult">
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="318dp"
+            android:layout_height="288dp"
+            android:layout_marginLeft="44dp"
+            android:layout_marginTop="20dp" />
+
+        <ListView
+            android:id="@+id/listview"
+            android:layout_width="match_parent"
+            android:layout_height="258dp"
+            android:layout_marginTop="20dp"></ListView>
+
+        <Button
+            android:id="@+id/creatReport"
+            android:layout_width="227dp"
+            android:layout_height="42dp"
+            android:layout_marginLeft="90dp"
+            android:layout_marginTop="15dp"
+            android:text="Creat Report"
+            tools:layout_editor_absoluteX="65dp"
+            tools:layout_editor_absoluteY="111dp" />
+    </LinearLayout>
+</LinearLayout >

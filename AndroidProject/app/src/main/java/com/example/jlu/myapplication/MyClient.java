@@ -19,10 +19,10 @@ public interface MyClient {
     )
     String sendRequest(@Query("myName") String username);
 
-    @Post(url = "http://123.56.40.181:8090/upload")
+    @Post(url = "http://123.56.40.181:8090/upload",timeout = 120000)
     String upload(@DataFile("file") String filePath, OnProgress onProgress);
 
-    @Post(url = "http://123.56.40.181:8090/download")
+    @Post(url = "http://123.56.40.181:8090/download",timeout = 120000)
     @DownloadFile(dir = "${0}", filename = "${1}")
     File downloadFile(String dir, String filename, OnProgress onProgress, @JSONBody("downloadPath") String path);
 }

@@ -18,6 +18,7 @@ import android.widget.ImageView;
 
 import com.dtflys.forest.config.ForestConfiguration;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.mingle.widget.ShapeLoadingDialog;
 import com.yalantis.ucrop.UCrop;
 
@@ -33,20 +34,36 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Array;
 import java.net.URI;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import android.graphics.Rect;
 
+import org.json.JSONArray;
+
 import id.zelory.compressor.Compressor;
+
 public class PhotoDisplay extends AppCompatActivity {
     private ImageView photo;
     private Uri photoUri;
     private String newUri = "";
     private String op_sd = "";
     private ShapeLoadingDialog shapeLoadingDialog;
-
+    private int offset = 0;
+    public static class Msg {
+        public int code;
+        public String message;
+        public Data data;
+        public static class Data{
+            public String main_img;
+            public Smoke[] sub_img;
+        }
+    }
+    private List<Smoke> SmokeList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,107 +92,126 @@ public class PhotoDisplay extends AppCompatActivity {
                     bitmap = BitmapFactory.decodeFile(path);
                     photo.setImageBitmap(bitmap);
                     photoUri = Uri.parse("file://" + path);
-
                 }
             } catch (Exception e) {
             }
         }
 
         Button button = (Button) findViewById(R.id.go_next);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view){
-                shapeLoadingDialog.show();
-                ForestConfiguration forest = ForestConfiguration.configuration();
-                MyClient myClient = forest.createInstance(MyClient.class);
-                compress(path);
-                Thread thread = new Thread (
-                    new Runnable()
-                    {
-                        @Override
-                        public void run()
-                        {
-                            String result = myClient.upload(path, progress -> {
-                                System.out.println("total bytes: " + progress.getTotalBytes());   // 文件大小
-                                System.out.println("current bytes: " + progress.getCurrentBytes());   // 已上传字节数
-                                System.out.println("progress: " + Math.round(progress.getRate() * 100) + "%");  // 已上传百分比
-                                if (progress.isDone()) {   // 是否上传完成
-                                    System.out.println("--------   Upload Completed!   --------");
-                                }
-                            });
+        button.setOnClickListener(view -> {
+            final String opd = photoUri.toString().substring(7);
+            shapeLoadingDialog.show();
+            ForestConfiguration forest = ForestConfiguration.configuration();
+            MyClient myClient = forest.createInstance(MyClient.class);
+            offset = 0;
+            compress(opd);
+            new Thread(
+                    () -> {
+                        shapeLoadingDialog.setLoadingText("Calcing... ");
+                        String result = myClient.upload(opd, progress -> {
+                            System.out.println("total bytes: " + progress.getTotalBytes());   // 文件大小
+                            System.out.println("current bytes: " + progress.getCurrentBytes());   // 已上传字节数
+                            System.out.println("progress: " + Math.round(progress.getRate() * 100) + "%");  // 已上传百分比
+                            if (progress.isDone()) {   // 是否上传完成
+                                System.out.println("--------   Upload Completed!   --------");
+                            }
+                        });
+                        SmokeList = new ArrayList<>();
+                        Gson gson = new Gson();
+                        Msg msg = new Gson().fromJson(result, Msg.class);
+                        //对象中拿到集合
+                        Msg.Data data = msg.data;
 
-                            Gson gson = new Gson();
-                            Map map = gson.fromJson(result,Map.class);
-                            String downloadPath = (String) map.get("url");
-                            op_sd = Method.getTimeStr();
-                            File file = myClient.downloadFile(
+                        File file;
+                        Smoke tmp;
+                        op_sd = Method.getTimeStr();
+
+                        file = myClient.downloadFile(
                                 getExternalFilesDir(null).getPath(),
-                                op_sd + ".jpg" ,
+                                op_sd + String.valueOf(offset) + ".jpg",
                                 progress -> {
                                     System.out.println("total bytes: " + progress.getTotalBytes());   // 文件大小
                                     System.out.println("current bytes: " + progress.getCurrentBytes());   // 已下载字节数
                                     System.out.println("progress: " + Math.round(progress.getRate() * 100) + "%");  // 已下载百分比
                                     if (progress.isDone()) {   // 是否下载完成
-                                        System.out.println("--------   Download Completed!   --------");
+                                        System.out.println("--------   Main Img Download Completed!   --------");
                                     }
-                                }, 
-                                downloadPath);
-                        }
-                    });
+                                }, data.main_img);
 
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        thread.start();
-                        try {
-                            thread.join();
-                        } catch (InterruptedException e) {
+                        tmp = new Smoke();
+                        tmp.url = getExternalFilesDir(null).getPath() + "/" + op_sd + String.valueOf(offset) + ".jpg";
+                        tmp.level = "-1";
+                        SmokeList.add(tmp);
+                        offset++;
+
+                        for (int i = 0, len = data.sub_img.length; i < len; i++) {
+                            String downloadPath = data.sub_img[i].url;
+                            Log.v("tts", downloadPath);
+                            op_sd = Method.getTimeStr();
+                            file = myClient.downloadFile(
+                                    getExternalFilesDir(null).getPath(),
+                                    op_sd + String.valueOf(offset) + ".jpg",
+                                    progress -> {
+                                        System.out.println("total bytes: " + progress.getTotalBytes());   // 文件大小
+                                        System.out.println("current bytes: " + progress.getCurrentBytes());   // 已下载字节数
+                                        System.out.println("progress: " + Math.round(progress.getRate() * 100) + "%");  // 已下载百分比
+                                        if (progress.isDone()) {   // 是否下载完成
+                                            System.out.println("--------   Sub Img Download Completed!   --------");
+                                        }
+                                    },
+                                    downloadPath);
+
+                            tmp = new Smoke();
+                            tmp.url = getExternalFilesDir(null).getPath() + "/" + op_sd + String.valueOf(offset) + ".jpg";
+                            tmp.level = data.sub_img[i].level;
+                            SmokeList.add(tmp);
+                            offset++;
                         }
-                        Uri downloadUri = Uri.parse("file://" + getExternalFilesDir(null).getPath() + "/" + op_sd + ".jpg");
-                        photo.setImageURI(downloadUri);
-                        shapeLoadingDialog.dismiss();
-                    }
-                },2000);
-            }
+
+                        runOnUiThread(() -> {
+                            Uri downloadUri = Uri.parse("file://" + SmokeList.get(0).url);
+                            shapeLoadingDialog.dismiss();
+                            final Intent intent2  =  new Intent(PhotoDisplay.this,ShowResult.class);
+                            final Gson gson2 = new Gson();
+                            intent2.putExtra("data",gson2.toJson(SmokeList));
+                            startActivity(intent2);
+                        });
+                    }).start();
         });
         Button button2 = (Button) findViewById(R.id.go_edit);
-        button2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String sd = Method.getTimeStr();
-                newUri = "file://" + getExternalFilesDir(null).getPath() + "/" + sd + ".jpg";
+        button2.setOnClickListener((view) -> {
+            String sd = Method.getTimeStr();
+            newUri = "file://" + getExternalFilesDir(null).getPath() + "/" + sd + ".jpg";
 
-                UCrop uCrop = UCrop.of( photoUri,  Uri.parse(newUri));
-                UCrop.Options options = new UCrop.Options();
+            UCrop uCrop = UCrop.of( photoUri,  Uri.parse(newUri));
+            UCrop.Options options = new UCrop.Options();
 
-                //设置toolbar颜色
-                options.setToolbarColor(ActivityCompat.getColor(PhotoDisplay.this, R.color.colorPrimary));
-                //设置状态栏颜色
-                options.setStatusBarColor(ActivityCompat.getColor(PhotoDisplay.this, R.color.colorPrimary));
-                options.setFreeStyleCropEnabled(true);
+            //设置toolbar颜色
+            options.setToolbarColor(ActivityCompat.getColor(PhotoDisplay.this, R.color.colorPrimary));
+            //设置状态栏颜色
+            options.setStatusBarColor(ActivityCompat.getColor(PhotoDisplay.this, R.color.colorPrimary));
+            options.setFreeStyleCropEnabled(true);
 
-                uCrop.withOptions(options);
-                uCrop.start(PhotoDisplay.this);
-            }
+            uCrop.withOptions(options);
+            uCrop.start(PhotoDisplay.this);
         });
     }
 
-    protected void compress(String path)
-    {
+    protected void compress(String path) {
         try {
             File new_file = new Compressor(PhotoDisplay.this).compressToFile(new File(path));
             FileOutputStream fos = new FileOutputStream(new File(path));
             Bitmap bitmap = BitmapFactory.decodeFile(new_file.getPath());
-            bitmap.compress(Bitmap.CompressFormat.JPEG,100,fos);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
             fos.flush();
             fos.close();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
         }
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
             final Uri resultUri = UCrop.getOutput(data);
             photoUri = resultUri;

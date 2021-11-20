@@ -18,41 +18,37 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".ShowDetailInfor"
+            android:exported="true" />
+        <activity
             android:name=".NetworkTest"
-            android:exported="true">
-        </activity>
-
+            android:exported="true"></activity>
         <activity
             android:name=".MainActivity"
-            android:label="Welcome!">
-        </activity>
-
+            android:label="Welcome!"></activity>
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:label=""
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-
         <activity android:name=".MainActivity2" />
         <activity
             android:name=".ChoosePhoto"
             android:label="Choose Photo">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".SharePage"
-            android:label="">
-        </activity>
-        <activity android:name=".PhotoDisplay">
-        </activity>
-
+            android:label=""></activity>
+        <activity android:name=".PhotoDisplay"></activity>
         <activity
             android:name=".ShowResult"
-            android:label="">
-        </activity>
+            android:label=""></activity>
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.example.cameraalbumtest.fileprovider"
