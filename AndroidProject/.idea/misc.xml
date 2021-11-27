@@ -3,14 +3,26 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Smoke-Pollution-Detection-app/AndroidProject/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1" />
         <entry key="..\:/Smoke-Pollution-Detection-app/AndroidProject/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
-        <entry key="..\:/Smoke-Pollution-Detection-app/AndroidProject/app/src/main/res/layout/activity_main.xml" value="0.1296875" />
+        <entry key="..\:/Smoke-Pollution-Detection-app/AndroidProject/app/src/main/res/drawable/list_view.xml" value="0.12864583333333332" />
+        <entry key="..\:/Smoke-Pollution-Detection-app/AndroidProject/app/src/main/res/layout/activity_about.xml" value="0.22083333333333333" />
+        <entry key="..\:/Smoke-Pollution-Detection-app/AndroidProject/app/src/main/res/layout/activity_choose_photo.xml" value="0.165" />
+        <entry key="..\:/Smoke-Pollution-Detection-app/AndroidProject/app/src/main/res/layout/activity_main.xml" value="0.125" />
+        <entry key="..\:/Smoke-Pollution-Detection-app/AndroidProject/app/src/main/res/layout/activity_main2.xml" value="0.1125" />
+        <entry key="..\:/Smoke-Pollution-Detection-app/AndroidProject/app/src/main/res/layout/activity_network_test.xml" value="0.22083333333333333" />
         <entry key="..\:/Smoke-Pollution-Detection-app/AndroidProject/app/src/main/res/layout/activity_network_text.xml" value="0.15670289855072464" />
-        <entry key="..\:/Smoke-Pollution-Detection-app/AndroidProject/app/src/main/res/layout/activity_photo_display.xml" value="0.25" />
+        <entry key="..\:/Smoke-Pollution-Detection-app/AndroidProject/app/src/main/res/layout/activity_photo_display.xml" value="0.1" />
+        <entry key="..\:/Smoke-Pollution-Detection-app/AndroidProject/app/src/main/res/layout/activity_share_page.xml" value="0.22083333333333333" />
         <entry key="..\:/Smoke-Pollution-Detection-app/AndroidProject/app/src/main/res/layout/activity_show_detail_infor.xml" value="0.22083333333333333" />
         <entry key="..\:/Smoke-Pollution-Detection-app/AndroidProject/app/src/main/res/layout/activity_show_result.xml" value="0.165" />
+        <entry key="..\:/Smoke-Pollution-Detection-app/AndroidProject/app/src/main/res/layout/activity_use_camera.xml" value="0.25" />
         <entry key="..\:/Smoke-Pollution-Detection-app/AndroidProject/app/src/main/res/layout/item.xml" value="0.11" />
         <entry key="..\:/Smoke-Pollution-Detection-app/AndroidProject/app/src/main/res/layout/item_indicator.xml" value="0.10729166666666666" />
+        <entry key="..\:/Smoke-Pollution-Detection-app/AndroidProject/app/src/main/res/menu/main.xml" value="0.125" />
+        <entry key="..\:/Smoke-Pollution-Detection-app/AndroidProject/app/src/main/res/menu/menu_scrolling.xml" value="0.45" />
+        <entry key="..\:/Smoke-Pollution-Detection-app/AndroidProject/app/src/main/res/menu/sharefile.xml" value="0.20520833333333333" />
+        <entry key="..\:/Smoke-Pollution-Detection-app/AndroidProject/app/src/main/res/xml/ss.xml" value="0.1" />
         <entry key="..\:/Smoke-Pollution-Detection-appp/AndroidProject/app/src/main/res/layout/activity_photo_display.xml" value="0.10729166666666666" />
         <entry key="..\:/Smoke-Pollution-Detection-appp/AndroidProject/app/src/main/res/layout/activity_use_camera.xml" value="0.10729166666666666" />
       </map>

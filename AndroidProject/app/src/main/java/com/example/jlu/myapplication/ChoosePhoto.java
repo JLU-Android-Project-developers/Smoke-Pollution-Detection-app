@@ -1,11 +1,13 @@
 package com.example.jlu.myapplication;
 
 import android.Manifest;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -14,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,8 +28,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class ChoosePhoto extends AppCompatActivity {
 
@@ -37,15 +38,37 @@ public class ChoosePhoto extends AppCompatActivity {
     private Uri imageUri;
     private Button goNext;
 
+    private void init()
+    {
+        TextView tv_about = (TextView)findViewById(R.id.about);
+        tv_about.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ComponentName componentname = new ComponentName(ChoosePhoto.this, AboutActivity.class);
+                Intent intent = new Intent();
+                intent.setComponent(componentname);
+                startActivity(intent);
+            }
+        });
+        Button camera,album,next;
+        camera = findViewById(R.id.take_photo);
+        Drawable drawableFirst = getResources().getDrawable(R.drawable.camera);
+        drawableFirst.setBounds(0, 0, 90, 90);//第一0是距左右边距离，第二0是距上下边距离，第三69长度,第四宽度
+        camera.setCompoundDrawables(null, drawableFirst, null, null);//只放上面
+        album = findViewById(R.id.choose_photo);
+        Drawable drawableSearch = getResources().getDrawable(R.drawable.album);
+        drawableSearch.setBounds(0, 0, 90, 90);//第一0是距左右边距离，第二0是距上下边距离，第三69长度,第四宽度
+        album.setCompoundDrawables(null, drawableSearch, null, null);//只放上面
+        next = findViewById(R.id.go_next);
+        Drawable drawableNext = getResources().getDrawable(R.drawable.next_trans);
+        drawableNext.setBounds(0, 0, 200, 80);//第一0是距左右边距离，第二0是距上下边距离，第三69长度,第四宽度
+        next.setCompoundDrawables(null, null, drawableNext, null);//只放上面
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_use_camera);
-        ActionBar actionBar = getSupportActionBar();
-        if(actionBar != null){
-            actionBar.setHomeButtonEnabled(true);
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
+        setContentView(R.layout.activity_choose_photo);
+        init();
         photo = (ImageView) findViewById(R.id.photo);
 
         goNext = (Button) findViewById(R.id.go_next);
@@ -53,9 +76,9 @@ public class ChoosePhoto extends AppCompatActivity {
         goNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Bitmap bitmap = setimage(photo);
-                String path = saveImageToGallery(bitmap);
-                Log.wtf("tts",path);
+
+                Bitmap bitmap = Method.setimage(photo);
+                String path = Method.saveImageToCache(bitmap,ChoosePhoto.this);
                 Intent intent = new Intent(ChoosePhoto.this,PhotoDisplay.class);
                 intent.putExtra("image",path);
                 startActivity(intent);
@@ -125,8 +148,6 @@ public class ChoosePhoto extends AppCompatActivity {
                     Uri uri = data.getData();
                     photo.setImageURI(uri);
                     goNext.setVisibility(View.VISIBLE);
-//                  String uriAuthority = uri.getAuthority();
-//                  Log.wtf("tts",uri.getScheme());
                     Log.wtf("tts",uri.getPath());
                 }
                 break;
@@ -135,32 +156,6 @@ public class ChoosePhoto extends AppCompatActivity {
         }
     }
 
-    private Bitmap setimage(ImageView view1){
-        Bitmap image = ((BitmapDrawable)view1.getDrawable()).getBitmap();
-        Bitmap bitmap1 = Bitmap.createBitmap(image);
-        return bitmap1;
-    }
-
-    public String saveImageToGallery(Bitmap bmp) {
-        String sd = Method.getTimeStr();
-        String newPath = getExternalFilesDir(null).getPath() + "/" + sd + ".jpg";
-        File file = new File(newPath);
-        Log.wtf("tts",file.getPath());
-        try {
-            if(file.exists())
-                file.delete();
-            if(!file.exists())
-                file.createNewFile();
-            FileOutputStream out = new FileOutputStream(file);
-            bmp.compress(Bitmap.CompressFormat.JPEG, 100, out);
-            out.flush();
-            out.close();
-            return file.getPath();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         //返回按钮点击事件

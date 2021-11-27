@@ -1,5 +1,6 @@
 package com.example.jlu.myapplication;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.res.Resources;
@@ -7,9 +8,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -42,6 +46,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import android.graphics.Rect;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 
@@ -64,6 +69,18 @@ public class PhotoDisplay extends AppCompatActivity {
         }
     }
     private List<Smoke> SmokeList;
+    private void init()
+    {
+        Button crop,confirm;
+        crop = findViewById(R.id.go_edit);
+        Drawable drawableCamera = getResources().getDrawable(R.drawable.crop);
+        drawableCamera.setBounds(0, 0, 90, 90);//第一0是距左右边距离，第二0是距上下边距离，第三69长度,第四宽度
+        crop.setCompoundDrawables(null, drawableCamera, null, null);//只放上面
+        confirm = findViewById(R.id.go_confirm);
+        Drawable drawableAlbum = getResources().getDrawable(R.drawable.confirm);
+        drawableAlbum.setBounds(0, 0, 90, 90);//第一0是距左右边距离，第二0是距上下边距离，第三69长度,第四宽度
+        confirm.setCompoundDrawables(null, drawableAlbum, null, null);//只放上面
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,13 +89,12 @@ public class PhotoDisplay extends AppCompatActivity {
             actionBar.setHomeButtonEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-
         setContentView(R.layout.activity_photo_display);
+        init();
         photo = (ImageView) findViewById(R.id.photo);
         shapeLoadingDialog = new ShapeLoadingDialog(PhotoDisplay.this);
-        shapeLoadingDialog.setLoadingText("加载中...");
+        shapeLoadingDialog.setLoadingText("Calcing...");
         shapeLoadingDialog.setCanceledOnTouchOutside(false);
-
         Bitmap bitmap = null;
         Intent intent = getIntent();
         final String path = intent.getStringExtra("image");
@@ -96,9 +112,13 @@ public class PhotoDisplay extends AppCompatActivity {
             } catch (Exception e) {
             }
         }
-
-        Button button = (Button) findViewById(R.id.go_next);
+        Button button = (Button) findViewById(R.id.go_confirm);
         button.setOnClickListener(view -> {
+            if(!Method.isNetworkConnected(PhotoDisplay.this))
+            {
+                Toast.makeText(PhotoDisplay.this, "网络无连接！", Toast.LENGTH_SHORT).show();
+                return ;
+            }
             final String opd = photoUri.toString().substring(7);
             shapeLoadingDialog.show();
             ForestConfiguration forest = ForestConfiguration.configuration();
@@ -106,26 +126,48 @@ public class PhotoDisplay extends AppCompatActivity {
             offset = 0;
             compress(opd);
             new Thread(
-                    () -> {
-                        shapeLoadingDialog.setLoadingText("Calcing... ");
-                        String result = myClient.upload(opd, progress -> {
-                            System.out.println("total bytes: " + progress.getTotalBytes());   // 文件大小
-                            System.out.println("current bytes: " + progress.getCurrentBytes());   // 已上传字节数
-                            System.out.println("progress: " + Math.round(progress.getRate() * 100) + "%");  // 已上传百分比
-                            if (progress.isDone()) {   // 是否上传完成
-                                System.out.println("--------   Upload Completed!   --------");
-                            }
-                        });
-                        SmokeList = new ArrayList<>();
-                        Gson gson = new Gson();
-                        Msg msg = new Gson().fromJson(result, Msg.class);
-                        //对象中拿到集合
-                        Msg.Data data = msg.data;
+                () -> {
+                try{
+                    String result = myClient.upload(opd, progress -> {
+                        System.out.println("total bytes: " + progress.getTotalBytes());   // 文件大小
+                        System.out.println("current bytes: " + progress.getCurrentBytes());   // 已上传字节数
+                        System.out.println("progress: " + Math.round(progress.getRate() * 100) + "%");  // 已上传百分比
+                        if (progress.isDone()) {   // 是否上传完成
+                            System.out.println("--------   Upload Completed!   --------");
+                        }
+                    });
+                    SmokeList = new ArrayList<>();
+                    Gson gson = new Gson();
+                    Msg msg = new Gson().fromJson(result, Msg.class);
+                    //对象中拿到集合
+                    Msg.Data data = msg.data;
 
-                        File file;
-                        Smoke tmp;
+                    File file;
+                    Smoke tmp;
+                    op_sd = Method.getTimeStr();
+
+                    file = myClient.downloadFile(
+                            getExternalFilesDir(null).getPath(),
+                            op_sd + String.valueOf(offset) + ".jpg",
+                            progress -> {
+                                System.out.println("total bytes: " + progress.getTotalBytes());   // 文件大小
+                                System.out.println("current bytes: " + progress.getCurrentBytes());   // 已下载字节数
+                                System.out.println("progress: " + Math.round(progress.getRate() * 100) + "%");  // 已下载百分比
+                                if (progress.isDone()) {   // 是否下载完成
+                                    System.out.println("--------   Main Img Download Completed!   --------");
+                                }
+                            }, data.main_img);
+
+                    tmp = new Smoke();
+                    tmp.url = getExternalFilesDir(null).getPath() + "/" + op_sd + String.valueOf(offset) + ".jpg";
+                    tmp.level = "-1";
+                    SmokeList.add(tmp);
+                    offset++;
+
+                    for (int i = 0, len = data.sub_img.length; i < len; i++) {
+                        String downloadPath = data.sub_img[i].url;
+                        Log.v("tts", downloadPath);
                         op_sd = Method.getTimeStr();
-
                         file = myClient.downloadFile(
                                 getExternalFilesDir(null).getPath(),
                                 op_sd + String.valueOf(offset) + ".jpg",
@@ -134,49 +176,35 @@ public class PhotoDisplay extends AppCompatActivity {
                                     System.out.println("current bytes: " + progress.getCurrentBytes());   // 已下载字节数
                                     System.out.println("progress: " + Math.round(progress.getRate() * 100) + "%");  // 已下载百分比
                                     if (progress.isDone()) {   // 是否下载完成
-                                        System.out.println("--------   Main Img Download Completed!   --------");
+                                        System.out.println("--------   Sub Img Download Completed!   --------");
                                     }
-                                }, data.main_img);
+                                },
+                                downloadPath);
 
                         tmp = new Smoke();
                         tmp.url = getExternalFilesDir(null).getPath() + "/" + op_sd + String.valueOf(offset) + ".jpg";
-                        tmp.level = "-1";
+                        tmp.level = data.sub_img[i].level;
                         SmokeList.add(tmp);
                         offset++;
+                    }
 
-                        for (int i = 0, len = data.sub_img.length; i < len; i++) {
-                            String downloadPath = data.sub_img[i].url;
-                            Log.v("tts", downloadPath);
-                            op_sd = Method.getTimeStr();
-                            file = myClient.downloadFile(
-                                    getExternalFilesDir(null).getPath(),
-                                    op_sd + String.valueOf(offset) + ".jpg",
-                                    progress -> {
-                                        System.out.println("total bytes: " + progress.getTotalBytes());   // 文件大小
-                                        System.out.println("current bytes: " + progress.getCurrentBytes());   // 已下载字节数
-                                        System.out.println("progress: " + Math.round(progress.getRate() * 100) + "%");  // 已下载百分比
-                                        if (progress.isDone()) {   // 是否下载完成
-                                            System.out.println("--------   Sub Img Download Completed!   --------");
-                                        }
-                                    },
-                                    downloadPath);
-
-                            tmp = new Smoke();
-                            tmp.url = getExternalFilesDir(null).getPath() + "/" + op_sd + String.valueOf(offset) + ".jpg";
-                            tmp.level = data.sub_img[i].level;
-                            SmokeList.add(tmp);
-                            offset++;
-                        }
-
-                        runOnUiThread(() -> {
-                            Uri downloadUri = Uri.parse("file://" + SmokeList.get(0).url);
-                            shapeLoadingDialog.dismiss();
-                            final Intent intent2  =  new Intent(PhotoDisplay.this,ShowResult.class);
-                            final Gson gson2 = new Gson();
-                            intent2.putExtra("data",gson2.toJson(SmokeList));
-                            startActivity(intent2);
-                        });
-                    }).start();
+                    runOnUiThread(() -> {
+                        Uri downloadUri = Uri.parse("file://" + SmokeList.get(0).url);
+                        shapeLoadingDialog.dismiss();
+                        final Intent intent2  =  new Intent(PhotoDisplay.this,ShowResult.class);
+                        final Gson gson2 = new Gson();
+                        intent2.putExtra("data",gson2.toJson(SmokeList));
+                        startActivity(intent2);
+                        shapeLoadingDialog.setLoadingText("Calcing... ");
+                    });
+                }catch(Exception  e){
+                    shapeLoadingDialog.dismiss();
+                    Looper.prepare();
+                    Toast.makeText(PhotoDisplay.this, "网络无连接！", Toast.LENGTH_SHORT).show();
+                    Looper.loop();
+                    return ;
+                }
+                }).start();
         });
         Button button2 = (Button) findViewById(R.id.go_edit);
         button2.setOnClickListener((view) -> {
@@ -220,7 +248,6 @@ public class PhotoDisplay extends AppCompatActivity {
             final Throwable cropError = UCrop.getError(data);
         }
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         //返回按钮点击事件
